@@ -1,0 +1,9 @@
+{
+  "exp_name": "ppo_deepseek_1_3b_lora_alpha0_03",
+  "model_path": "checkpoints/deepseek_1_3b_lora_ppo_alpha0.03_500",
+  "is_lora": true,
+  "num_tasks": 33,
+  "num_pass": 14,
+  "pass_at_1": 0.42424242424242425,
+  "avg_gen_len": 54.878787878787875
+}

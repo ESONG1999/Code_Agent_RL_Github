@@ -1,0 +1,10 @@
+{"update": 10, "batch_size": 8, "avg_reward": 0.2395000159740448, "avg_base_reward": 0.25, "avg_gen_len": 105.0}
+{"update": 20, "batch_size": 8, "avg_reward": 0.4887000322341919, "avg_base_reward": 0.5, "avg_gen_len": 113.0}
+{"update": 30, "batch_size": 8, "avg_reward": 0.3628999888896942, "avg_base_reward": 0.375, "avg_gen_len": 121.0}
+{"update": 40, "batch_size": 8, "avg_reward": 0.3655875027179718, "avg_base_reward": 0.375, "avg_gen_len": 94.125}
+{"update": 50, "batch_size": 8, "avg_reward": 0.1156499981880188, "avg_base_reward": 0.125, "avg_gen_len": 93.5}
+{"update": 60, "batch_size": 8, "avg_reward": 0.7403124570846558, "avg_base_reward": 0.75, "avg_gen_len": 96.875}
+{"update": 70, "batch_size": 8, "avg_reward": 0.8684124946594238, "avg_base_reward": 0.875, "avg_gen_len": 65.875}
+{"update": 80, "batch_size": 8, "avg_reward": 0.6155749559402466, "avg_base_reward": 0.625, "avg_gen_len": 94.25}
+{"update": 90, "batch_size": 8, "avg_reward": 0.49332499504089355, "avg_base_reward": 0.5, "avg_gen_len": 66.75}
+{"update": 100, "batch_size": 8, "avg_reward": 0.4906750023365021, "avg_base_reward": 0.5, "avg_gen_len": 93.25}

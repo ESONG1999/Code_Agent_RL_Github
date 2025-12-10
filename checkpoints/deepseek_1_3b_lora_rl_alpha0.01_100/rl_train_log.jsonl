@@ -1,0 +1,10 @@
+{"step": 10, "task_id": "HumanEval/12", "base_reward": 0.0, "length_penalty": 0.0051, "reward": -0.0051, "gen_len": 51, "loss": -0.050048828125}
+{"step": 20, "task_id": "HumanEval/140", "base_reward": 0.0, "length_penalty": 0.0256, "reward": -0.0256, "gen_len": 256, "loss": -1.44140625}
+{"step": 30, "task_id": "HumanEval/34", "base_reward": 0.0, "length_penalty": 0.004, "reward": -0.004, "gen_len": 40, "loss": -0.0163726806640625}
+{"step": 40, "task_id": "HumanEval/119", "base_reward": 0.0, "length_penalty": 0.013000000000000001, "reward": -0.013000000000000001, "gen_len": 130, "loss": -0.24658203125}
+{"step": 50, "task_id": "HumanEval/78", "base_reward": 0.0, "length_penalty": 0.0233, "reward": -0.0233, "gen_len": 233, "loss": -0.81494140625}
+{"step": 60, "task_id": "HumanEval/88", "base_reward": 0.0, "length_penalty": 0.0078000000000000005, "reward": -0.0078000000000000005, "gen_len": 78, "loss": -0.1151123046875}
+{"step": 70, "task_id": "HumanEval/18", "base_reward": 0.0, "length_penalty": 0.0040999999999999995, "reward": -0.0040999999999999995, "gen_len": 41, "loss": -0.0265960693359375}
+{"step": 80, "task_id": "HumanEval/158", "base_reward": 0.0, "length_penalty": 0.0023, "reward": -0.0023, "gen_len": 23, "loss": -0.00994110107421875}
+{"step": 90, "task_id": "HumanEval/115", "base_reward": 0.0, "length_penalty": 0.022799999999999997, "reward": -0.022799999999999997, "gen_len": 228, "loss": -0.705078125}
+{"step": 100, "task_id": "HumanEval/132", "base_reward": 0.0, "length_penalty": 0.0256, "reward": -0.0256, "gen_len": 256, "loss": -0.91943359375}

@@ -1,0 +1,9 @@
+{
+  "exp_name": "base_deepseek_1_3b",
+  "model_path": "deepseek-ai/deepseek-coder-1.3b-base",
+  "is_lora": false,
+  "num_tasks": 33,
+  "num_pass": 5,
+  "pass_at_1": 0.15151515151515152,
+  "avg_gen_len": 177.27272727272728
+}

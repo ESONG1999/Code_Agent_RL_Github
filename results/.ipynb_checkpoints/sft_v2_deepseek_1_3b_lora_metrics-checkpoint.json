@@ -1,0 +1,9 @@
+{
+  "exp_name": "sft_v2_deepseek_1_3b_lora",
+  "model_path": "checkpoints/deepseek_1_3b_lora_sft_v2",
+  "is_lora": true,
+  "num_tasks": 33,
+  "num_pass": 5,
+  "pass_at_1": 0.15151515151515152,
+  "avg_gen_len": 179.72727272727272
+}
