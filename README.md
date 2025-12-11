@@ -24,7 +24,7 @@ This repo explores:
    - lightweight **LoRA-based SFT** on HumanEval-like tasks, and  
    - **RL objectives** based on unit-test rewards and length penalties.
 
-2. Whether **PPO-style policy optimization** provides additional gains and better
+2. Whether **PPO/DPO-style policy optimization** provides additional gains and better
    length–accuracy trade-offs vs. vanilla REINFORCE.
 
 3. How to build a **robust evaluation harness** that:
@@ -169,8 +169,7 @@ offline preference-based alignment method that replaces the RL stage of RLHF wit
 contrastive loss on pairwise preferences.
 
 - We first sample multiple completions per prompt from the SFT LoRA model.
-- Each completion is scored with the same **unit-test + length penalty reward** used in RL/PPO, e.g.  
-  `reward = passed_all_tests - alpha * (length / 100)`.
+- Each completion is scored with the same **unit-test** used in RL/PPO.
 - For each prompt, we construct synthetic preference pairs (`chosen`, `rejected`) by
   ranking completions by reward and keeping the higher-reward one as `chosen`.
 - Instead of training a reward model + RL, we directly optimize the **DPO loss** on these pairs,
