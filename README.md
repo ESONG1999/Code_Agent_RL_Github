@@ -169,19 +169,18 @@ offline preference-based alignment method that replaces the RL stage of RLHF wit
 contrastive loss on pairwise preferences.
 
 - We first sample multiple completions per prompt from the SFT LoRA model.
-- Each completion is scored with the same **unit-test + length penalty reward** used in RL/PPO:
-  \[
-  r = \mathbf{1}\{\text{all tests pass}\} - \alpha \cdot \frac{\text{length}}{100}
-  \]
-- For each prompt, we construct synthetic preference pairs \((\text{chosen}, \text{rejected})\) by
+- Each completion is scored with the same **unit-test + length penalty reward** used in RL/PPO, e.g.  
+  `reward = passed_all_tests - alpha * (length / 100)`.
+- For each prompt, we construct synthetic preference pairs (`chosen`, `rejected`) by
   ranking completions by reward and keeping the higher-reward one as `chosen`.
 - Instead of training a reward model + RL, we directly optimize the **DPO loss** on these pairs,
-  using the SFT policy as the reference model, following Rafailov et al.
+  using the SFT policy as the reference model.
 
-With \(\beta=0.05\) and a single DPO epoch on these synthetic pairs, we obtain a
+With `beta = 0.05` and a single DPO epoch on these synthetic pairs, we obtain a
 **DPO-LoRA checkpoint**:
 
 - `checkpoints/deepseek_1_3b_lora_dpo_beta0.05_ep1`
+
 
 ---
 
