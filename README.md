@@ -277,7 +277,7 @@ sh train_SFT_RL.sh
 sh train_PPO.sh
 ```
 
-#### 2) DPO Train & Evaluation
+#### 3) DPO Train & Evaluation
 
 ```bash
 sh train_DPO.sh
