@@ -162,6 +162,27 @@ Resulting PPO checkpoints include:
 - `checkpoints/deepseek_1_3b_lora_ppo_alpha0.01_8`  
 - `checkpoints/deepseek_1_3b_lora_ppo_alpha0.03_8`
 
+### 2.6 DPO (offline preference optimization)
+
+On top of the SFT policy, we also experiment with **Direct Preference Optimization (DPO)**, an
+offline preference-based alignment method that replaces the RL stage of RLHF with a simple
+contrastive loss on pairwise preferences.
+
+- We first sample multiple completions per prompt from the SFT LoRA model.
+- Each completion is scored with the same **unit-test + length penalty reward** used in RL/PPO:
+  \[
+  r = \mathbf{1}\{\text{all tests pass}\} - \alpha \cdot \frac{\text{length}}{100}
+  \]
+- For each prompt, we construct synthetic preference pairs \((\text{chosen}, \text{rejected})\) by
+  ranking completions by reward and keeping the higher-reward one as `chosen`.
+- Instead of training a reward model + RL, we directly optimize the **DPO loss** on these pairs,
+  using the SFT policy as the reference model, following Rafailov et al.
+
+With \(\beta=0.05\) and a single DPO epoch on these synthetic pairs, we obtain a
+**DPO-LoRA checkpoint**:
+
+- `checkpoints/deepseek_1_3b_lora_dpo_beta0.05_ep1`
+
 ---
 
 ## 3. Evaluation
@@ -199,27 +220,32 @@ We report:
 
 All experiments are run on **33 HumanEval-style tasks** using a single 16–24GB GPU.
 
-### 4.1 Overall performance
+### 4.1 Summary table
 
-| Model / Checkpoint                           | Method                      | pass@1 | #passed / #tasks | Avg. length |
-|---------------------------------------------|-----------------------------|:------:|:----------------:|:-----------:|
-| `deepseek-ai/deepseek-coder-1.3b-base`      | Base                        | 0.152  | 5 / 33           | 177.27      |
-| `deepseek_1_3b_lora_sft_v2`                 | SFT (QLoRA + LoRA)          | 0.364  | 12 / 33          | 136.33      |
-| `deepseek_1_3b_lora_rl_alpha0.01_100`       | RL (REINFORCE, α = 0.01)    | **0.485** | 16 / 33       | 107.55      |
-| `deepseek_1_3b_lora_rl_alpha0.03`           | RL (REINFORCE, α = 0.03)    | 0.424  | 14 / 33          | 136.21      |
-| `deepseek_1_3b_lora_ppo_alpha0.01`          | PPO (α = 0.01, batch = 4)   | 0.455  | 15 / 33          | 89.64       |
-| `deepseek_1_3b_lora_ppo_alpha0.03`          | PPO (α = 0.03, batch = 4)   | 0.424  | 14 / 33          | 66.33       |
-| `deepseek_1_3b_lora_ppo_alpha0.01_8`        | PPO (α = 0.01, batch = 8)   | 0.394  | 13 / 33          | 80.27       |
-| `deepseek_1_3b_lora_ppo_alpha0.03_8`        | PPO (α = 0.03, batch = 8)   | 0.455  | 15 / 33          | 92.91       |
+| Model                                      | Method                   | pass@1 | #passed / #tasks | Avg. length |
+|-------------------------------------------|--------------------------|:------:|:----------------:|:-----------:|
+| `deepseek-ai/deepseek-coder-1.3b-base`    | Base                     | 0.15   | 5 / 33           | 177.3       |
+| `deepseek_1_3b_lora_sft_v2`               | SFT (QLoRA+LoRA)         | 0.36   | 12 / 33          | 136.3       |
+| `deepseek_1_3b_lora_rl_alpha0.01_100`     | RL (REINFORCE, α=0.01)   | **0.48** | 16 / 33        | 107.5       |
+| `deepseek_1_3b_lora_rl_alpha0.03`         | RL (REINFORCE, α=0.03)   | 0.42   | 14 / 33          | 136.2       |
+| `deepseek_1_3b_lora_ppo_alpha0.01`        | PPO (α=0.01, bs=4)       | 0.45   | 15 / 33          | 89.6        |
+| `deepseek_1_3b_lora_ppo_alpha0.03`        | PPO (α=0.03, bs=4)       | 0.42   | 14 / 33          | 66.3        |
+| `deepseek_1_3b_lora_ppo_alpha0.01_8`      | PPO (α=0.01, bs=8)       | 0.39   | 13 / 33          | 80.3        |
+| `deepseek_1_3b_lora_ppo_alpha0.03_8`      | PPO (α=0.03, bs=8)       | 0.45   | 15 / 33          | 92.9        |
+| `deepseek_1_3b_lora_dpo_beta0.05_ep1`     | **DPO (β=0.05, 1 epoch)**| 0.45   | 15 / 33          | 119.8       |
+
 
 **Key observations:**
 
-- **SFT alone** improves HumanEval pass@1 from **15.2% → 36.4%** (+21.2 points),
-  while shortening average outputs from ~177 to ~136 tokens.
-- **RL with unit-test rewards + length penalty (α = 0.01)** further boosts pass@1
-  to **48.5%** (+33.3 points over base) and reduces average length to ~108 tokens.
-- **PPO** achieves similar correctness (up to 45.5% pass@1) with even more aggressive
-  length reduction (down to 66–90 tokens), illustrating a clear **length–accuracy trade-off**.
+- **SFT alone** improves HumanEval pass@1 from 15.2% → 36.4% (+21.2 pts) while shortening outputs
+  (177 → 136 tokens).
+- **RL with unit-test rewards + length penalty (α=0.01)** further boosts pass@1 to 48.5% (+33.3 pts
+  over base) with much shorter code (107 tokens on average).
+- **PPO** reaches up to 45.5% pass@1 while aggressively reducing solution length (down to 66–90 tokens),
+  highlighting a clear length–accuracy trade-off.
+- **DPO (β=0.05)**, trained offline on synthetic preference pairs derived from the same reward,
+  matches the best PPO variants at **45.5% pass@1** with moderately short solutions (~120 tokens),
+  showing that preference-only post-training can recover most of the RL gains without online rollouts.
 
 ---
 
@@ -251,6 +277,9 @@ sh train_SFT_RL.sh
 sh train_PPO.sh
 ```
 
----
+#### 2) DPO Train & Evaluation
 
-## 6. Future work: DPO and preference-based alignment
+```bash
+sh train_DPO.sh
+```
+

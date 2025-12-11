@@ -7,8 +7,8 @@ generate_dpo_data.py
   "task_id": ...,
   "prompt": ...,
   "prompt_len_tokens": int,
-  "chosen": "...",          # 通过单测的代码
-  "rejected": "...",        # 未通过单测的代码
+  "chosen": "...",          
+  "rejected": "...",        
   "logp_ref_chosen": float,
   "logp_ref_rejected": float,
   "base_reward_chosen": 1,
